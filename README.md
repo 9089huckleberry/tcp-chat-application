@@ -1,2 +1,2 @@
-# tcp-chat-application
-A TCP-based chat application with file transfer functionality using C++
+# TCP MULTI-CLIENT CHAT Application
+This repository contains a TCP-based chat application written in C++. The application supports multiple clients connecting to a single server and communicating with each other in real-time. The server handles incoming client connections and broadcasts messages to all clients except the sender. The clients can send messages and receive messages from the server simultaneously using multithreading.
