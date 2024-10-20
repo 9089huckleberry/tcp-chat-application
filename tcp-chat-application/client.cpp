@@ -14,12 +14,12 @@ void handle_receive(int socket)
         int valread = read(socket, buffer, 1024);
         if (valread > 0)
         {
-            std::cout << buffer << std::endl;
-            memset(buffer, 0, sizeof(buffer)); // Clear buffer after reading
+            cout << buffer << endl;
+            memset(buffer, 0, sizeof(buffer)); 
         }
         else if (valread == 0)
         {
-            std::cout << "Server disconnected" << std::endl;
+            cout << "Server disconnected" << endl;
             break;
         }
     }
@@ -30,11 +30,11 @@ void handle_send(int socket)
     char buffer[1024];
     while (true)
     {
-        std::cin.getline(buffer, 1024);
+        cin.getline(buffer, 1024);
         send(socket, buffer, strlen(buffer), 0);
         if (strcmp(buffer, "exit") == 0)
         {
-            std::cout << "Closing connection..." << std::endl;
+            cout << "Closing connection..." << endl;
             break;
         }
     }
@@ -45,42 +45,42 @@ int main()
     int sock = 0;
     struct sockaddr_in serv_addr;
 
-    // Create socket
+    
     if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0)
     {
-        std::cerr << "Socket creation error" << std::endl;
+        cerr << "Socket creation error" << endl;
         return -1;
     }
 
     serv_addr.sin_family = AF_INET;
     serv_addr.sin_port = htons(PORT);
 
-    // Convert IPv4 address from text to binary
+
     if (inet_pton(AF_INET, "127.0.0.1", &serv_addr.sin_addr) <= 0)
     {
-        std::cerr << "Invalid address/ Address not supported" << std::endl;
+        cerr << "Invalid address/ Address not supported" << endl;
         return -1;
     }
 
-    // Connect to the server
+    
     if (connect(sock, (struct sockaddr *)&serv_addr, sizeof(serv_addr)) < 0)
     {
-        std::cerr << "Connection Failed" << std::endl;
+        cerr << "Connection Failed" << endl;
         return -1;
     }
 
-    std::cout << "Enter your name: ";
-    std::string name;
-    std::getline(std::cin, name);
+    cout << "Enter your name: ";
+    string name;
+    getline(cin, name);
 
-    // Send the client name to the server
+    
     send(sock, name.c_str(), name.length(), 0);
 
-    std::cout << "Connected to the server as " << name << "!" << std::endl;
+    cout << "Connected to the server as " << name << "!" << endl;
 
-    // Create threads for sending and receiving
-    std::thread receive_thread(handle_receive, sock);
-    std::thread send_thread(handle_send, sock);
+    
+    thread receive_thread(handle_receive, sock);
+    thread send_thread(handle_send, sock);
 
     // Join threads
     receive_thread.join();
